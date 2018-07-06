@@ -1,5 +1,7 @@
 ## Загрузчик файлов в микроконтроллер
 
+<img src="docs/img.png>
+
 Task:
 
 1. [x] Конвертирование Intel hex в bin файл. `python`
