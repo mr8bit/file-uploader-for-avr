@@ -5,7 +5,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(342, 347)
+        MainWindow.setFixedSize(342, 347)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
@@ -39,7 +39,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Загрузчик файлов"))
         self.pushButton.setText(_translate("MainWindow", "Выберите файл"))
         self.pushButton_2.setText(_translate("MainWindow", "Прошить"))
         self.label.setText(_translate("MainWindow", "Cкорость передачи\n"
