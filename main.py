@@ -9,6 +9,7 @@ import os
 import sys
 import design
 from intelhex import hex2bin
+import serial
 
 baudrates = [
     300,
@@ -36,7 +37,7 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.com_port = ''
         self.pushButton.clicked.connect(self.browse_folder)
         for item in serial.tools.list_ports.comports():
-            self.listWidget.addItem(item.name)
+            self.listWidget.addItem(item.device)
         for boud in baudrates:
             self.listWidget_2.addItem(str(boud))
         self.label_2.setWordWrap(True)
@@ -63,9 +64,20 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
                 out_file = '{0}.bin'.format(self.path_file.split('.')[0])
                 hex2bin(in_file, out_file)
             else:
-                pass
-            print("Information for AVR", self.path_file, self.com_port, self.boud)
-
+                out_file = self.path_file
+            ser = serial.Serial()
+            ser.baudrate = int(self.boud)
+            ser.port = self.com_port
+            if not ser.is_open:
+                ser.open()
+            with open(out_file, "rb") as f:
+                byte = f.read(16)
+                while byte != b'': # Окончание бинарного файла
+                    byte = f.read(16)
+                    ser.write(byte)
+            ser.close()
+            buttonReply = QtWidgets.QMessageBox.question(self, 'Успешно', "Отправка данных успешно завершена",
+                                                         QtWidgets.QMessageBox.Ok)
     def browse_folder(self):
         self.label_2.clear()  # На случай, если в списке уже есть элементы
         file = QtWidgets.QFileDialog.getOpenFileName(self, "Выберите файл")
