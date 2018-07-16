@@ -41,8 +41,25 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         for boud in baudrates:
             self.listWidget_2.addItem(str(boud))
         self.label_2.setWordWrap(True)
-
         self.pushButton_2.clicked.connect(self.get_param)
+
+        # Получить папку пользователя
+        home_dir = os.path.expanduser("~")
+        program_name = 'Proshivator'
+        program_path = '{0}/{1}/{2}'.format(home_dir, '/', program_name)
+        try:
+            os.makedirs(program_path)
+        except OSError as e:
+            pass
+        if not os.path.isfile("{0}/settings.txt".format(program_path)):
+            f = open("{0}/settings.txt".format(program_path), "w+")
+            f.write("Пример")
+            f.close()
+        f = open("{0}/settings.txt".format(program_path), "r")
+        contents = f.readlines()
+        for command in contents:
+            extractAction = QtWidgets.QAction(command.split('\n')[0], self)
+            self.menu_3.addAction(extractAction)
 
     def get_param(self):
         try:
@@ -72,12 +89,13 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
                 ser.open()
             with open(out_file, "rb") as f:
                 byte = f.read(16)
-                while byte != b'': # Окончание бинарного файла
+                while byte != b'':  # Окончание бинарного файла
                     byte = f.read(16)
                     ser.write(byte)
             ser.close()
             buttonReply = QtWidgets.QMessageBox.question(self, 'Успешно', "Отправка данных успешно завершена",
                                                          QtWidgets.QMessageBox.Ok)
+
     def browse_folder(self):
         self.label_2.clear()  # На случай, если в списке уже есть элементы
         file = QtWidgets.QFileDialog.getOpenFileName(self, "Выберите файл")
