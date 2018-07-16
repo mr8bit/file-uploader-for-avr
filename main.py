@@ -37,14 +37,23 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.programm_name = 'Proshivator' # Название программы 
         self.setting_file = 'settings.txt' # Название файла с настройками
         self.program_path = '{0}/{1}/{2}'.format(self.home_dir, '/',  self.programm_name) # Путь к папке с настройками
+        self.setting_path = "{0}/{1}".format(self.program_path, self.setting_file
         try:
             os.makedirs(self.program_path) # Пытаемся создасть папку для файла с настройками
         except OSError as e: # Папка есть, пропускаем ошибку 
             pass
-        if not os.path.isfile("{0}/{1}".format(self.program_path, self.setting_file)): # Проверяем существование файла с настройками
-            f = open("{0}/{1}".format(self.program_path, self.setting_file), "w+") # Открываем файл для первоначальной иницализации
+        if not os.path.isfile(self.setting_path): # Проверяем существование файла с настройками
+            f = open(self.setting_path, "w+") # Открываем файл для первоначальной иницализации
             f.write("Пример") # Заполняем файл
             f.close() # Закрываем
+
+    def filling_the_menu(self):
+        f = open(self.setting_path), "r") #
+        contents = f.readlines()
+        for command in contents:
+            extractAction = QtWidgets.QAction(command.split('\n')[0], self)
+            extractAction.triggered.connect(self.printer)
+            self.menu_3.addAction(extractAction)
 
     def __init__(self):
         super().__init__()
@@ -52,7 +61,9 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.path_file = ''
         self.boud = ''
         self.com_port = ''
-        self.check_folder_and_file_settings()
+        self.check_folder_and_file_settings() # Вызов функции для проверки существования файла настроек.
+        self.filling_the_menu()        
+
         self.pushButton.clicked.connect(self.browse_folder)
         for item in serial.tools.list_ports.comports():
             self.listWidget.addItem(item.device)
@@ -61,14 +72,10 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.label_2.setWordWrap(True)
         self.pushButton_2.clicked.connect(self.get_param)
 
-        # Получить папку пользователя
-        
-    
-        f = open("{0}/settings.txt".format(self.program_path), "r")
-        contents = f.readlines()
-        for command in contents:
-            extractAction = QtWidgets.QAction(command.split('\n')[0], self)
-            self.menu_3.addAction(extractAction)
+    def printer(self):
+        sender = self.sender() # Принимаем нажатый элемент
+        command_to_send = sender.text() #  Извлекаем название элменета
+        print("Команда для отправки") # Выполняем команду отправки элемента 
 
     def get_param(self):
         try:
