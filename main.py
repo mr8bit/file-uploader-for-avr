@@ -37,7 +37,7 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.programm_name = 'Proshivator' # Название программы 
         self.setting_file = 'settings.txt' # Название файла с настройками
         self.program_path = '{0}/{1}/{2}'.format(self.home_dir, '/',  self.programm_name) # Путь к папке с настройками
-        self.setting_path = "{0}/{1}".format(self.program_path, self.setting_file
+        self.setting_path = "{0}/{1}".format(self.program_path, self.setting_file) # Путь к программе
         try:
             os.makedirs(self.program_path) # Пытаемся создасть папку для файла с настройками
         except OSError as e: # Папка есть, пропускаем ошибку 
@@ -48,12 +48,15 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
             f.close() # Закрываем
 
     def filling_the_menu(self):
-        f = open(self.setting_path), "r") #
-        contents = f.readlines()
-        for command in contents:
-            extractAction = QtWidgets.QAction(command.split('\n')[0], self)
-            extractAction.triggered.connect(self.printer)
-            self.menu_3.addAction(extractAction)
+        """
+            Заполнение список команд 
+        """
+        f = open(self.setting_path, "r") # Открываем файл
+        contents = f.readlines() # Читаем все строки
+        for command in contents: # Идем по строкам 
+            extractAction = QtWidgets.QAction(command.split('\n')[0], self) # Создаем элементы
+            extractAction.triggered.connect(self.printer)  # Создаем соединение с функцией
+            self.menu_3.addAction(extractAction) # Добавляем в меню
 
     def __init__(self):
         super().__init__()
@@ -62,7 +65,7 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.boud = ''
         self.com_port = ''
         self.check_folder_and_file_settings() # Вызов функции для проверки существования файла настроек.
-        self.filling_the_menu()        
+        self.filling_the_menu() # Вызов функции для заполнения команд
 
         self.pushButton.clicked.connect(self.browse_folder)
         for item in serial.tools.list_ports.comports():
