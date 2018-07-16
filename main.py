@@ -29,12 +29,30 @@ baudrates = [
 
 
 class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
+    def check_folder_and_file_settings(self):
+        """
+            Проверка существования папки с файлом настроек. И создание в случаем из отсутсвия.
+        """
+        self.home_dir = os.path.expanduser("~") # Получение папки пользователя
+        self.programm_name = 'Proshivator' # Название программы 
+        self.setting_file = 'settings.txt' # Название файла с настройками
+        self.program_path = '{0}/{1}/{2}'.format(self.home_dir, '/',  self.programm_name) # Путь к папке с настройками
+        try:
+            os.makedirs(self.program_path) # Пытаемся создасть папку для файла с настройками
+        except OSError as e: # Папка есть, пропускаем ошибку 
+            pass
+        if not os.path.isfile("{0}/{1}".format(self.program_path, self.setting_file)): # Проверяем существование файла с настройками
+            f = open("{0}/{1}".format(self.program_path, self.setting_file), "w+") # Открываем файл для первоначальной иницализации
+            f.write("Пример") # Заполняем файл
+            f.close() # Закрываем
+
     def __init__(self):
         super().__init__()
         self.setupUi(self)
         self.path_file = ''
         self.boud = ''
         self.com_port = ''
+        self.check_folder_and_file_settings()
         self.pushButton.clicked.connect(self.browse_folder)
         for item in serial.tools.list_ports.comports():
             self.listWidget.addItem(item.device)
@@ -44,18 +62,9 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.pushButton_2.clicked.connect(self.get_param)
 
         # Получить папку пользователя
-        home_dir = os.path.expanduser("~")
-        program_name = 'Proshivator'
-        program_path = '{0}/{1}/{2}'.format(home_dir, '/', program_name)
-        try:
-            os.makedirs(program_path)
-        except OSError as e:
-            pass
-        if not os.path.isfile("{0}/settings.txt".format(program_path)):
-            f = open("{0}/settings.txt".format(program_path), "w+")
-            f.write("Пример")
-            f.close()
-        f = open("{0}/settings.txt".format(program_path), "r")
+        
+    
+        f = open("{0}/settings.txt".format(self.program_path), "r")
         contents = f.readlines()
         for command in contents:
             extractAction = QtWidgets.QAction(command.split('\n')[0], self)
