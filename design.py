@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(340, 488)
+        MainWindow.resize(343, 478)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
@@ -46,31 +46,38 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.menuBar = QtWidgets.QMenuBar(MainWindow)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 340, 25))
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 343, 25))
         self.menuBar.setObjectName("menuBar")
         self.menu = QtWidgets.QMenu(self.menuBar)
         self.menu.setObjectName("menu")
-        self.menu_2 = QtWidgets.QMenu(self.menuBar)
-        self.menu_2.setObjectName("menu_2")
         self.menu_3 = QtWidgets.QMenu(self.menuBar)
         self.menu_3.setObjectName("menu_3")
+        self.menu_4 = QtWidgets.QMenu(self.menuBar)
+        self.menu_4.setObjectName("menu_4")
+
         MainWindow.setMenuBar(self.menuBar)
         self.action = QtWidgets.QAction(MainWindow)
         self.action.setObjectName("action")
         self.action_2 = QtWidgets.QAction(MainWindow)
         self.action_2.setObjectName("action_2")
+        self.action_3 = QtWidgets.QAction(MainWindow)
+        self.action_3.setObjectName("action_4")
+
+        self.action_4 = QtWidgets.QAction(MainWindow)
+        self.action_4.setObjectName("action_4")
+        
         self.menu.addAction(self.action)
-        self.menu_2.addAction(self.action_2)
+        self.menu.addAction(self.action_3)
+        self.menu_4.addAction(self.action_4)
         self.menuBar.addAction(self.menu.menuAction())
-        self.menuBar.addAction(self.menu_2.menuAction())
         self.menuBar.addAction(self.menu_3.menuAction())
+        self.menuBar.addAction(self.menu_4.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Прошиватор v0.1"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Прошиватор"))
         self.pushButton.setText(_translate("MainWindow", "Выберите файл"))
         self.pushButton_2.setText(_translate("MainWindow", "Прошить"))
         self.label.setText(_translate("MainWindow", "Cкорость передачи \n"
@@ -81,7 +88,10 @@ class Ui_MainWindow(object):
         self.checkBox.setText(_translate("MainWindow", "Сравнить при отправке"))
         self.pushButton_3.setText(_translate("MainWindow", "Сравнить"))
         self.menu.setTitle(_translate("MainWindow", "Настройки"))
-        self.menu_2.setTitle(_translate("MainWindow", "О программе"))
         self.menu_3.setTitle(_translate("MainWindow", "Команды"))
+        self.action_4.setText(_translate("MainWindow", "Начать ввод"))
+
+        self.menu_4.setTitle(_translate("MainWindow", "Ручной ввод"))
         self.action.setText(_translate("MainWindow", "Добавить команды"))
         self.action_2.setText(_translate("MainWindow", "Репозиторий"))
+        self.action_3.setText(_translate("MainWindow", "О программе"))

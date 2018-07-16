@@ -10,6 +10,8 @@ import sys
 import design
 from intelhex import hex2bin
 import serial
+from hand_send import HandSendWindow
+import platform
 
 baudrates = [
     300,
@@ -26,6 +28,7 @@ baudrates = [
     460800,
     921600
 ]
+
 
 
 class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
@@ -55,7 +58,6 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         contents = f.readlines() # Читаем все строки
         for command in contents: # Идем по строкам 
             extractAction = QtWidgets.QAction(command.split('\n')[0], self) # Создаем элементы
-            extractAction.triggered.connect(self.printer)  # Создаем соединение с функцией
             self.menu_3.addAction(extractAction) # Добавляем в меню
 
     def __init__(self):
@@ -66,7 +68,8 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.com_port = ''
         self.check_folder_and_file_settings() # Вызов функции для проверки существования файла настроек.
         self.filling_the_menu() # Вызов функции для заполнения команд
-
+        self.action_4.triggered.connect(self.open_hand_sender)
+        self.action.triggered.connect(self.open_setting_with_program) #При нажатии на кнопку отрываем файл настроек
         self.pushButton.clicked.connect(self.browse_folder)
         for item in serial.tools.list_ports.comports():
             self.listWidget.addItem(item.device)
@@ -75,10 +78,21 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.label_2.setWordWrap(True)
         self.pushButton_2.clicked.connect(self.get_param)
 
-    def printer(self):
-        sender = self.sender() # Принимаем нажатый элемент
-        command_to_send = sender.text() #  Извлекаем название элменета
-        print("Команда для отправки") # Выполняем команду отправки элемента 
+    def open_setting_with_program(self):
+        if platform.system() == 'Linux':
+            os.system("open "+self.setting_path)
+        elif platform.system() == 'Darwin':
+            os.system("open "+self.setting_path)
+        elif platform.system() == 'Windows':
+            os.system("start "+self.setting_path)
+
+    def open_hand_sender(self):
+        self.nd = HandSendWindow(self)
+        self.nd.show()
+
+        #sender = self.sender() # Принимаем нажатый элемент
+        #command_to_send = sender.text() #  Извлекаем название элменета
+        #print("Команда для отправки") # Выполняем команду отправки элемента 
 
     def get_param(self):
         try:
