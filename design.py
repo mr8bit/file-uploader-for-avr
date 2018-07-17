@@ -32,6 +32,7 @@ class Ui_MainWindow(object):
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setGeometry(QtCore.QRect(20, 20, 291, 41))
         self.label_2.setObjectName("label_2")
+        self.label_2.setWordWrap(True)
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
         self.label_3.setGeometry(QtCore.QRect(20, 150, 141, 51))
         self.label_3.setObjectName("label_3")
